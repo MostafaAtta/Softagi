@@ -7,9 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,9 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         goToRegester = findViewById(R.id.sign_up_tv);
 
         loginBtn.setOnClickListener(this);
-        goToRegester.setOnClickListener(view -> {
-
-        });
+        goToRegester.setOnClickListener(this);
 
 
     }

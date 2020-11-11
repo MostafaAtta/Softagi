@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     EditText nameEditText, phoneEditText, emailEditText, passwordEditText;
 
@@ -26,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     TextView loginText;
 
-
+    ArrayList<String> citiesEn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         passwordEditText = findViewById(R.id.editTextTextPassword);
         citySpinner = findViewById(R.id.spinner);
         radioGroup = findViewById(R.id.radioGroup);
+        citySpinner = findViewById(R.id.spinner);
 
         signUpBtn = findViewById(R.id.sign_up);
 
@@ -63,6 +67,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+
+        citiesEn = new ArrayList<>();
+        citiesEn.add("Cairo");
+        citiesEn.add("Alex");
+        citiesEn.add("Giza");
+        citiesEn.add("Luxor");
+        citiesEn.add("Tanta");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                citiesEn);
+        citySpinner.setAdapter(adapter);
+
+        citySpinner.setOnItemSelectedListener(this);
     }
 
 
@@ -77,10 +96,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
             Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-            intent.putExtra("email", email);
-            intent.putExtra("name", name);
-            intent.putExtra("phone", phone);
-            intent.putExtra("password", password);
+
+            User user = new User(name, phone, email, password, city, sex);
+            intent.putExtra("user", user);
             startActivity(intent);
             finish();
 
@@ -89,5 +107,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        city = citiesEn.get(i);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
