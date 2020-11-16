@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         WebView myWebView = findViewById(R.id.webView);
         myWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -55,13 +54,23 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-
+                //Toast.makeText(MainActivity.this, url, Toast.LENGTH_SHORT).show();
             }
         });
         myWebView.getSettings().setLoadsImagesAutomatically(true);
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        //myWebView.loadUrl("https://translate.google.com.eg/");
+        myWebView.loadUrl("https://translate.google.com.eg/");
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swap_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myWebView.loadUrl("https://translate.google.com.eg/");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
     }
 
     @Override

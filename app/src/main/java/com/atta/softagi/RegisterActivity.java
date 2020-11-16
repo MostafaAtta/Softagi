@@ -1,5 +1,6 @@
 package com.atta.softagi;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        nameEditText = findViewById(R.id.editTextTextPersonName);
+        nameEditText = findViewById(R.id.editTextTextFristName);
         phoneEditText = findViewById(R.id.editTextPhone);
         emailEditText = findViewById(R.id.editTextTextEmailAddress);
         passwordEditText = findViewById(R.id.editTextTextPassword);
@@ -94,13 +96,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             email = emailEditText.getText().toString().trim();
             password = passwordEditText.getText().toString().trim();
 
+            showDialog();
 
-            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-
-            User user = new User(name, phone, email, password, city, sex);
-            intent.putExtra("user", user);
-            startActivity(intent);
-            finish();
 
         }else if (view == loginText){
 
@@ -116,6 +113,46 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    public void showDialog(){
+
+        Dialog dialog = new Dialog(this);
+
+        dialog.setContentView(R.layout.custem_popup);
+
+        EditText codeEditText = dialog.findViewById(R.id.code_text);
+
+        Button verifyBtn = dialog.findViewById(R.id.verify_btn);
+
+        verifyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String code = codeEditText.getText().toString().trim();
+
+                if (code.isEmpty() ){
+                    Toast.makeText(RegisterActivity.this, "Enter your code", Toast.LENGTH_SHORT).show();
+                }else if(!code.equals("1234")){
+
+                    Toast.makeText(RegisterActivity.this, "Wrong Code", Toast.LENGTH_SHORT).show();
+
+                }else {
+
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+
+                    User user = new User(name, phone, email, password, city, sex);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                    finish();
+
+                }
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
 
     }
 }
